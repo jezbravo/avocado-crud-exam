@@ -6,10 +6,10 @@ Esta es una aplicación de gestión de tareas: permite crear, editar, consultar 
 
 ### Stack
 
--FastAPI
--MongoDB
--React JS
--TailwindCSS
+- FastAPI
+- MongoDB
+- React JS
+- TailwindCSS
 
 ## Configuración
 
