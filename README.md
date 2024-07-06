@@ -20,7 +20,7 @@ git clone https://github.com/jezbravo/avocado-crud-exam.git
 cd avocado-crud-exam
 ```
 
-## Configurar las variables de entorno:
+Configurar las variables de entorno:
 
 ### /backend/.env:
 
@@ -45,8 +45,12 @@ docker-compose up
 
 ### Backend:
 
-(http://localhost:8000)
+http://localhost:8000
 
 ### Frontend:
 
-(http://localhost:5173)
+http://localhost:5173
+
+## Documentación:
+
+http://localhost/docs
