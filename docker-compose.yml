@@ -1,52 +1,47 @@
-version: "3.8"
-
 services:
-  backend:
-    env_file:
-      - ./backend/.env
-    build:
-      context: ./backend/
-      dockerfile: Dockerfile
-    container_name: fastapi_backend
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./backend:/app
-    environment:
-      - PYTHONUNBUFFERED=1
-      - MONGODB_URI=mongodb://mongo:27017/task_database
-      - FRONTEND_URL=http://localhost:5173
-    depends_on:
-      - mongo
-
-  frontend:
-    env_file:
-      - ./frontend/.env
-    build:
-      context: ./frontend/
-      dockerfile: Dockerfile
-    container_name: vite_frontend
-    ports:
-      - "5173:5173"
-    volumes:
-      - ./frontend:/app
-    environment:
-      - VITE_BACKEND_URL=http://localhost:8000
-    command: npm run dev -- --host
-
-  mongo:
-    env_file:
-      - ./backend/.env
-    image: mongo:7.0
+  db:
+    image: mongo:latest
     container_name: mongo
     ports:
       - "27017:27017"
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=1234
     volumes:
-      - mongo_data:/data/db
-    command: "mongod"
+      - data-db:/data/db
+    restart: always
+    networks:
+      - app-network
 
+  backend:
+    container_name: backend
+    depends_on:
+      - db
+    build:
+      dockerfile: Dockerfile
+      context: ./backend
+    env_file:
+      - backend/.env
+    ports:
+      - "8000:8000"
+    restart: always
+    networks:
+      - app-network
+    environment:
+      MONGODB_URL: mongodb://mongo:27017/task_databse
+
+  frontend:
+    container_name: frontend
+    depends_on:
+      - backend
+    build:
+      dockerfile: Dockerfile
+      context: ./frontend
+    env_file:
+      - frontend/.env
+    ports:
+      - "5173:5173"
+    networks:
+      - app-network
 volumes:
-  mongo_data:
+  data-db:
+networks:
+  app-network:
+    driver: bridge
