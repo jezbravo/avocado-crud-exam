@@ -53,4 +53,4 @@ http://localhost:5173
 
 ## Documentación:
 
-http://localhost/docs
+http://localhost:8000/docs
