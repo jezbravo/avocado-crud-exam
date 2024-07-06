@@ -2,10 +2,13 @@ from fastapi import HTTPException, status
 from motor.motor_asyncio import AsyncIOMotorClient
 from models import Task
 from bson import ObjectId
+import os
 
 
 def database():
-    return AsyncIOMotorClient("mongodb://localhost:27017").task_database
+    mongo_url = os.getenv("MONGODB_URL", "mongodb://mongo:27017/task_database")
+    # return AsyncIOMotorClient("mongodb://localhost:27017").task_database <- para uso local
+    return AsyncIOMotorClient(mongo_url).task_database
 
 
 # Obtener lista de tareas
